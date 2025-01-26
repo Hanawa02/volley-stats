@@ -1,6 +1,21 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
 
+  "access_type_admin": "Admin",
+  "access_type_statistics": "Statistics",
+  "access_type_read_only": "Read only",
+
+  "add_member_dialog_title": "Add new member to '{teamName}'",
+  "add_member_dialog_form_access_type_label": "Type",
+  "add_member_dialog_form_access_type_description": "The member's access type to the app.",
+  "add_member_dialog_form_player_positions_label": "Player Positions",
+  "add_member_dialog_form_player_positions_description": "The positions the player act on.",
+  "add_member_dialog_form_name_label": "Name",
+  "add_member_dialog_form_name_placeholder": "Ada Lovelace",
+  "add_member_dialog_cancel_button": "Cancel",
+  "add_member_dialog_add_button": "Add member",
+  "add_member_dialog_add_more_button": "Add and continue to add more",
+
   "login_headline": "Login",
   "login_sign_up_link": "Don't have an account yet? Sign up here!",
   "login_form_email_label": "E-mail",
@@ -8,6 +23,34 @@
   "login_form_password_label": "Password",
   "login_form_password_placeholder": "Use a strong and safe password!",
   "login_form_button": "Login",
+
+  "members_table_filter_placeholder": "Search for a member",
+  "members_table_remove_players_button": "Remove selected players",
+  "members_table_add_players_button": "Add player",
+  "members_table_no_players_added": "No players added yet.",
+  "members_table_previous_button": "Previous",
+  "members_table_next_button": "Next",
+  "members_table_select_all_members_aria_label": "Select all members",
+  "members_table_select_row_member_aria_label": "Select member row",
+  "members_table_header_player_name": "Name",
+  "members_table_header_player_uniform_numbers": "Uniform Numbers",
+  "members_table_header_player_positions": "Positions",
+  "members_table_header_player_access_type": "Access Type",
+
+  "new_team_form_name_label": "Team name",
+  "new_team_form_name_placeholder": "VFL Oythe",
+  "new_team_form_name_description": "The nmame of your Team.",
+  "new_team_form_logo_url_label": "Logo URL",
+  "new_team_form_logo_url_placeholder": "https://example.com/logo.png",
+  "new_team_form_logo_url_description": "The team logo.",
+  "new_team_form_submit_button": "Create Team",
+
+  "player_position_coach": "Coach",
+  "player_position_libero": "Libero",
+  "player_position_setter": "Setter",
+  "player_position_middle_blocker": "Middle Blocker",
+  "player_position_opposite_hitter": "Opposite Hitter",
+  "player_position_outside_hitter": "Outside Hitter",
 
   "sign_up_headline": "Sign up",
   "sign_up_login_link": "Already have an account? Login here!",
@@ -20,5 +63,7 @@
   "sign_up_form_password_label": "Password",
   "sign_up_form_password_placeholder": "Your strong and safe password",
   "sign_up_form_password_description": "Use a password that is at least 8 characters long and contains at least one number.",
-  "sign_up_form_button": "Sign up"
+  "sign_up_form_button": "Sign up",
+
+  "teams_new_headline": "Create a new team"
 }
