@@ -1,33 +1,33 @@
 <template>
   <form @submit="onSubmit" class="flex flex-col gap-4">
-    <InputFormField name="displayName" type="text" :placeholder="signup_form_display_name_placeholder()">
+    <InputFormField name="displayName" type="text" :placeholder="sign_up_form_display_name_placeholder()">
       <template v-slot:label>
-        {{ signup_form_display_name_label() }}
+        {{ sign_up_form_display_name_label() }}
         <InfoTooltip>
-          {{ signup_form_display_name_description() }}
+          {{ sign_up_form_display_name_description() }}
         </InfoTooltip>
       </template>
     </InputFormField>
 
-    <InputFormField name="email" type="email" :placeholder="signup_form_email_placeholder()">
+    <InputFormField name="email" type="email" :placeholder="sign_up_form_email_placeholder()">
       <template v-slot:label>
-        {{ signup_form_email_label() }}
+        {{ sign_up_form_email_label() }}
         <InfoTooltip>
-          {{ signup_form_email_description() }}
+          {{ sign_up_form_email_description() }}
         </InfoTooltip>
       </template>
     </InputFormField>
 
-    <InputFormField name="password" type="password" :placeholder="signup_form_password_placeholder()">
+    <InputFormField name="password" type="password" :placeholder="sign_up_form_password_placeholder()">
       <template v-slot:label>
-        {{ signup_form_password_label() }}
+        {{ sign_up_form_password_label() }}
         <InfoTooltip>
-          {{ signup_form_password_description() }}
+          {{ sign_up_form_password_description() }}
         </InfoTooltip>
       </template>
     </InputFormField>
 
-    <Button type="submit">{{ signup_form_button() }}</Button>
+    <Button type="submit">{{ sign_up_form_button() }}</Button>
   </form>
 </template>
 
@@ -37,16 +37,16 @@ import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
 import {
-  signup_form_email_label,
-  signup_form_email_placeholder,
-  signup_form_password_label,
-  signup_form_password_placeholder,
-  signup_form_button,
-  signup_form_display_name_label,
-  signup_form_display_name_description,
-  signup_form_display_name_placeholder,
-  signup_form_email_description,
-  signup_form_password_description,
+  sign_up_form_email_label,
+  sign_up_form_email_placeholder,
+  sign_up_form_password_label,
+  sign_up_form_password_placeholder,
+  sign_up_form_button,
+  sign_up_form_display_name_label,
+  sign_up_form_display_name_description,
+  sign_up_form_display_name_placeholder,
+  sign_up_form_email_description,
+  sign_up_form_password_description,
 } from "translations";
 
 import { Button } from "~/components/ui/button";
