@@ -84,6 +84,9 @@ const signUpUser = async ({ email, password, displayName }: SignupForm) => {
     },
   });
   if (error) console.log(error);
+  if (data) {
+    await navigateTo("/");
+  }
 };
 
 const onSubmit = form.handleSubmit(signUpUser, (errors) => {
