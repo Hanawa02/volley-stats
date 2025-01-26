@@ -14,28 +14,28 @@ export type Database = {
           action_category: Database["public"]["Enums"]["Action Categories"]
           action_result: Database["public"]["Enums"]["Action Results"]
           created_at: string
-          id: number
-          opposite_team_action: boolean | null
-          player_id: number | null
-          set_id: number
+          id: string
+          opposite_team_action: boolean
+          player_id: string | null
+          set_id: string
         }
         Insert: {
           action_category: Database["public"]["Enums"]["Action Categories"]
           action_result: Database["public"]["Enums"]["Action Results"]
           created_at?: string
-          id?: number
-          opposite_team_action?: boolean | null
-          player_id?: number | null
-          set_id: number
+          id?: string
+          opposite_team_action?: boolean
+          player_id?: string | null
+          set_id: string
         }
         Update: {
           action_category?: Database["public"]["Enums"]["Action Categories"]
           action_result?: Database["public"]["Enums"]["Action Results"]
           created_at?: string
-          id?: number
-          opposite_team_action?: boolean | null
-          player_id?: number | null
-          set_id?: number
+          id?: string
+          opposite_team_action?: boolean
+          player_id?: string | null
+          set_id?: string
         }
         Relationships: [
           {
@@ -59,30 +59,30 @@ export type Database = {
           created_at: string
           date: string
           home_game: boolean
-          id: number
+          id: string
           opponent_team_name: string
-          team_id: number
+          team_ids: string
         }
         Insert: {
           created_at?: string
           date: string
           home_game: boolean
-          id?: number
+          id?: string
           opponent_team_name: string
-          team_id: number
+          team_ids: string
         }
         Update: {
           created_at?: string
           date?: string
           home_game?: boolean
-          id?: number
+          id?: string
           opponent_team_name?: string
-          team_id?: number
+          team_ids?: string
         }
         Relationships: [
           {
-            foreignKeyName: "Games_team_id_fkey"
-            columns: ["team_id"]
+            foreignKeyName: "games_team_ids_fkey"
+            columns: ["team_ids"]
             isOneToOne: false
             referencedRelation: "teams"
             referencedColumns: ["id"]
@@ -92,38 +92,38 @@ export type Database = {
       sets: {
         Row: {
           created_at: string
-          game_id: number
-          id: number
-          starting_player_1: number
-          starting_player_2: number
-          starting_player_3: number
-          starting_player_4: number
-          starting_player_5: number
-          starting_player_6: number
+          game_id: string
+          id: string
+          starting_player_1: string
+          starting_player_2: string
+          starting_player_3: string
+          starting_player_4: string
+          starting_player_5: string
+          starting_player_6: string
           team_starts_serving: boolean
         }
         Insert: {
           created_at?: string
-          game_id: number
-          id?: number
-          starting_player_1: number
-          starting_player_2: number
-          starting_player_3: number
-          starting_player_4: number
-          starting_player_5: number
-          starting_player_6: number
+          game_id: string
+          id?: string
+          starting_player_1: string
+          starting_player_2: string
+          starting_player_3: string
+          starting_player_4: string
+          starting_player_5: string
+          starting_player_6: string
           team_starts_serving: boolean
         }
         Update: {
           created_at?: string
-          game_id?: number
-          id?: number
-          starting_player_1?: number
-          starting_player_2?: number
-          starting_player_3?: number
-          starting_player_4?: number
-          starting_player_5?: number
-          starting_player_6?: number
+          game_id?: string
+          id?: string
+          starting_player_1?: string
+          starting_player_2?: string
+          starting_player_3?: string
+          starting_player_4?: string
+          starting_player_5?: string
+          starting_player_6?: string
           team_starts_serving?: boolean
         }
         Relationships: [
@@ -182,27 +182,30 @@ export type Database = {
         Row: {
           access: Database["public"]["Enums"]["Access Type"]
           created_at: string
-          id: number
+          id: string
           name: string
-          team_id: number
+          positions: Database["public"]["Enums"]["Player Positions"][]
+          team_id: string
           uniform_numbers: number[] | null
           user_id: string | null
         }
         Insert: {
           access?: Database["public"]["Enums"]["Access Type"]
           created_at?: string
-          id?: number
+          id?: string
           name: string
-          team_id: number
+          positions: Database["public"]["Enums"]["Player Positions"][]
+          team_id: string
           uniform_numbers?: number[] | null
           user_id?: string | null
         }
         Update: {
           access?: Database["public"]["Enums"]["Access Type"]
           created_at?: string
-          id?: number
+          id?: string
           name?: string
-          team_id?: number
+          positions?: Database["public"]["Enums"]["Player Positions"][]
+          team_id?: string
           uniform_numbers?: number[] | null
           user_id?: string | null
         }
@@ -214,24 +217,31 @@ export type Database = {
             referencedRelation: "teams"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "team_members_team_ids_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
         ]
       }
       teams: {
         Row: {
           created_at: string
-          id: number
+          id: string
           logo_url: string | null
           name: string
         }
         Insert: {
           created_at?: string
-          id?: number
+          id?: string
           logo_url?: string | null
           name: string
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           logo_url?: string | null
           name?: string
         }
