@@ -67,16 +67,27 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 ## Document
 
 - [ ] How to setup Supabase project based on database types file (terraform/orm db)
-- [ ]
+- [ ] Concept of the project
 
 ## Features (in order of importance)
 
-- [ ] Manage Roles
-  - [ ] Invite/Add people
-- [ ] Auto-generate events
-- [ ] Events visualization
-  - [ ] List
-  - [ ] Calendar
-- [ ] Sync with Calendar providers
-  - [ ] Outlook
-  - [ ] Google
+- [ ] Add Team
+- [ ] Add team members
+- [ ] Add Game
+- [ ] Add Set
+- [ ] Add Action
+- [ ] Basic statistics view
+- [ ] Fix styling/design
+
+- [ ] Edit/Remove Team
+- [ ] Edit/Remove team members
+- [ ] Edit/Remove Game
+- [ ] Edit/Remove Set
+- [ ] Edit/Remove Action
+- [ ] Undo Action?
+
+- [ ] Google auth
+- [ ] Generate/Invite team members as users
+- [ ] Register with invitation link
+
+  ![Data base structure](docs/db_structure.png)
