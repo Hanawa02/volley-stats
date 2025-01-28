@@ -46,6 +46,7 @@ import {
 
 import MembersTable, { type TeamMember } from "~/components/teams/MembersTable.vue";
 
+import InfoTooltip from "~/components/ui/InfoTooltip.vue";
 import { Button } from "~/components/ui/button";
 import InputFormField from "~/components/ui/InputFormField.vue";
 

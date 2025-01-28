@@ -7,9 +7,11 @@
         :model-value="filterValue"
         @update:model-value="updateFilterValue"
       />
-      <Button type="button" @click="removeSelectedUsers">
-        {{ members_table_remove_players_button() }}
-      </Button>
+      <Button
+        type="button"
+        @click="removeSelectedUsers"
+        v-html="members_table_remove_players_button()"
+      />
 
       <AddMemberDialog :teamName="teamName" @addMember="addMember">
         <Button type="button">{{ members_table_add_players_button() }}</Button>
@@ -45,7 +47,7 @@
           </template>
 
           <TableRow v-else>
-            <TableCell :colspan="columns.length" class="h-24 text-center">
+            <TableCell :colspan="columns.length" class="h-24 md:text-center">
               {{ members_table_no_players_added() }}
             </TableCell>
           </TableRow>

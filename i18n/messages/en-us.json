@@ -28,7 +28,7 @@
   "login_form_button": "Login",
 
   "members_table_filter_placeholder": "Search for a member",
-  "members_table_remove_players_button": "Remove selected players",
+  "members_table_remove_players_button": "Remove <span class='hidden md:block'>selected </span>players",
   "members_table_add_players_button": "Add player",
   "members_table_no_players_added": "No players added yet.",
   "members_table_previous_button": "Previous",

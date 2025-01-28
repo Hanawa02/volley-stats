@@ -5,7 +5,7 @@
         <slot name="label"></slot>
       </FormLabel>
       <FormControl>
-        <SelectInput :options="playerPositionOptions" v-bind="componentField" />
+        <ComboBox :options="playerPositionOptions" v-bind="componentField" />
       </FormControl>
       <FormMessage />
     </FormItem>
@@ -16,7 +16,8 @@
 import { defineProps, computed } from "vue";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import SelectInput, { type Option } from "~/components/ui/SelectInput.vue";
+
+import ComboBox, { type Option } from "~/components/ui/ComboBox.vue";
 import {
   access_type_admin,
   access_type_statistics,

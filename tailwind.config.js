@@ -5,7 +5,7 @@ module.exports = {
   darkMode: ["class"],
   safelist: ["dark"],
   prefix: "",
-  
+  content: ['./components/**/*.*', './pages/**/*.*', './i18n/**/*.*'],
   theme: {
     container: {
       center: true,

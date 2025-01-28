@@ -29,7 +29,7 @@
                 </InfoTooltip>
               </template>
             </AccessTypeFormField>
-            <PlayerPositionFormField name="playerPositions">
+            <PlayerPositionFormField name="positions">
               <template v-slot:label>
                 {{ add_member_dialog_form_player_positions_label() }}
                 <InfoTooltip>
@@ -100,6 +100,10 @@ const formSchema = toTypedSchema(
 
 const form = useForm({
   validationSchema: formSchema,
+  initialValues: {
+    uniformNumbers: [],
+    positions: [],
+  },
 });
 
 const emit = defineEmits<{
