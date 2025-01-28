@@ -3,9 +3,9 @@
     <PopoverTrigger as-child>
       <Button size="auto" variant="outline" role="combobox" :aria-expanded="open" class="w-full">
         <div v-if="value?.length > 0" class="flex gap-1 flex-wrap">
-          <span class="bg-slate-200 rounded-full px-2 py-1" template v-for="v in value">{{
+          <Badge v-for="v in value">{{
             options.find((option) => option.value === v)?.label
-          }}</span>
+          }}</Badge>
         </div>
         <p v-else>
           <slot name="placeholder"> {{ combo_box_placeholder() }}</slot>
@@ -52,6 +52,7 @@ import {
   CommandItem,
   CommandList,
 } from "~/components/ui/command";
+import { Badge } from "~/components/ui/badge";
 
 import { combo_box_placeholder, combo_box_no_option_found } from "translations";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
