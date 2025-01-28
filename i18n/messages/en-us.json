@@ -16,6 +16,9 @@
   "add_member_dialog_add_button": "Add member",
   "add_member_dialog_add_more_button": "Add and continue to add more",
 
+  "combo_box_no_option_found": "No option found.",
+  "combo_box_placeholder": "Select an option...",
+
   "login_headline": "Login",
   "login_sign_up_link": "Don't have an account yet? Sign up here!",
   "login_form_email_label": "E-mail",
