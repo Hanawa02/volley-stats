@@ -143,6 +143,7 @@ import {
 import type { Row, Table as TableType } from "@tanstack/vue-table";
 import { useUsers } from "~/composables/usersConnections";
 
+import { Badge } from "~/components/ui/badge";
 import { playerPositionTranslation } from "~/utils/player-position";
 import { memberTypeTranslation } from "~/utils/member-type";
 
@@ -210,7 +211,11 @@ const columns: ColumnDef<TeamMember>[] = [
       );
     },
     cell: ({ row }: { row: Row<TeamMember> }) => {
-      return h("div", { class: "capitalize" }, row.original.email);
+      return h(
+        "div",
+        { class: "flex flex-wrap gap-1" },
+        row.original.uniformNumbers.map((n) => h(Badge, { variant: "outline" }, n))
+      );
     },
   },
   {

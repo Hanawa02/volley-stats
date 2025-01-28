@@ -21,7 +21,7 @@
               </template>
             </InputFormField>
 
-            <AccessTypeFormField name="type">
+            <AccessTypeFormField name="access">
               <template v-slot:label>
                 {{ add_member_dialog_form_access_type_label() }}
                 <InfoTooltip>
@@ -37,6 +37,14 @@
                 </InfoTooltip>
               </template>
             </PlayerPositionFormField>
+            <UniformNumberFormField name="uniformNumbers">
+              <template v-slot:label>
+                {{ add_member_dialog_form_player_positions_label() }}
+                <InfoTooltip>
+                  {{ add_member_dialog_form_player_positions_description() }}
+                </InfoTooltip>
+              </template>
+            </UniformNumberFormField>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -64,7 +72,9 @@ import {
 import InputFormField from "~/components/ui/InputFormField.vue";
 import AccessTypeFormField from "~/components/ui/AccessTypeFormField.vue";
 import PlayerPositionFormField from "~/components/ui/PlayerPositionFormField.vue";
+import UniformNumberFormField from "~/components/ui/UniformNumberFormField.vue";
 import InfoTooltip from "~/components/ui/InfoTooltip.vue";
+import { Button } from "~/components/ui/button";
 
 import {
   add_member_dialog_title,
@@ -93,7 +103,7 @@ const formSchema = toTypedSchema(
   z.object({
     name: z.string().min(2).max(50),
     access: z.string(),
-    uniformNumbers: z.array(z.number()).optional(),
+    uniformNumbers: z.array(z.string()).optional(),
     positions: z.array(z.string()).optional(),
   })
 );
@@ -111,10 +121,16 @@ const emit = defineEmits<{
 }>();
 
 const onSubmit = form.handleSubmit(async (values) => {
-  emit("addMember", values);
+  const validUniformNumbers = values.uniformNumbers
+    .filter((n) => !isNaN(n))
+    .map((n) => parseInt(n));
+  const validValues = { ...values, uniformNumbers: validUniformNumbers };
+
+  emit("addMember", validValues);
 
   if (form.values) {
     form.resetForm();
+    addMember;
   }
 });
 </script>
