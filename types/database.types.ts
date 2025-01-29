@@ -186,7 +186,7 @@ export type Database = {
           name: string
           positions: Database["public"]["Enums"]["Player Positions"][]
           team_id: string
-          uniform_numbers: number[] | null
+          uniform_number: number | null
           user_id: string | null
         }
         Insert: {
@@ -196,7 +196,7 @@ export type Database = {
           name: string
           positions: Database["public"]["Enums"]["Player Positions"][]
           team_id: string
-          uniform_numbers?: number[] | null
+          uniform_number?: number | null
           user_id?: string | null
         }
         Update: {
@@ -206,7 +206,7 @@ export type Database = {
           name?: string
           positions?: Database["public"]["Enums"]["Player Positions"][]
           team_id?: string
-          uniform_numbers?: number[] | null
+          uniform_number?: number | null
           user_id?: string | null
         }
         Relationships: [

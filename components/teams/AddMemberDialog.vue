@@ -37,14 +37,14 @@
                 </InfoTooltip>
               </template>
             </PlayerPositionFormField>
-            <UniformNumberFormField name="uniformNumbers">
+            <InputNumberFormField name="uniformNumber" :min="1" :max="999">
               <template v-slot:label>
                 {{ add_member_dialog_form_player_positions_label() }}
                 <InfoTooltip>
                   {{ add_member_dialog_form_player_positions_description() }}
                 </InfoTooltip>
               </template>
-            </UniformNumberFormField>
+            </InputNumberFormField>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -72,7 +72,7 @@ import {
 import InputFormField from "~/components/ui/InputFormField.vue";
 import AccessTypeFormField from "~/components/ui/AccessTypeFormField.vue";
 import PlayerPositionFormField from "~/components/ui/PlayerPositionFormField.vue";
-import UniformNumberFormField from "~/components/ui/UniformNumberFormField.vue";
+import InputNumberFormField from "~/components/ui/InputNumberFormField.vue";
 import InfoTooltip from "~/components/ui/InfoTooltip.vue";
 import { Button } from "~/components/ui/button";
 
@@ -103,15 +103,16 @@ const formSchema = toTypedSchema(
   z.object({
     name: z.string().min(2).max(50),
     access: z.string(),
-    uniformNumbers: z.array(z.string()).optional(),
+    uniformNumber: z.number().min(1).max(999).optional(),
     positions: z.array(z.string()).optional(),
   })
 );
 
-const form = useForm({
+const { handleSubmit, resetForm, values } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    uniformNumbers: [],
+    name: "",
+    access: "statistics",
     positions: [],
   },
 });
@@ -120,17 +121,11 @@ const emit = defineEmits<{
   (e: "addMember", member: RoleMember): void;
 }>();
 
-const onSubmit = form.handleSubmit(async (values) => {
-  const validUniformNumbers = values.uniformNumbers
-    .filter((n) => !isNaN(n))
-    .map((n) => parseInt(n));
-  const validValues = { ...values, uniformNumbers: validUniformNumbers };
+const onSubmit = handleSubmit(async (values) => {
+  emit("addMember", values);
 
-  emit("addMember", validValues);
-
-  if (form.values) {
-    form.resetForm();
-    addMember;
+  if (values) {
+    resetForm();
   }
 });
 </script>

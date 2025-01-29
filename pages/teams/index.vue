@@ -6,9 +6,11 @@
 
     <h2 class="mt-8">Teams</h2>
     <ul v-if="teams">
-      <li v-for="team in teams" :key="team?.id">
-        <NuxtLink :to="`/teams/${team.id}`"> {{ team?.name }}</NuxtLink>
-      </li>
+      <template v-for="team in teams">
+        <li v-if="team" :key="team?.id">
+          <NuxtLink :to="`/teams/${team?.id}`"> {{ team?.name }}</NuxtLink>
+        </li>
+      </template>
     </ul>
   </section>
 </template>
@@ -22,12 +24,8 @@ const { data: teams } = await useAsyncData("teams", async () => {
     return;
   }
 
-  const { data } = await client
-    .from("team_members")
-    .select("id, teams:team_id(*)")
-    .eq("email", user.value.email)
-    .order("created_at");
+  const { data } = await client.from("teams").select().order("created_at");
 
-  return data?.map((team) => team.teams) ?? [];
+  return data ?? [];
 });
 </script>

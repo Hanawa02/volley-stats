@@ -18,7 +18,7 @@
       </template>
     </InputFormField>
 
-    <MembersTable v-model="members" :teamName="form.values.name"></MembersTable>
+    <MembersTable v-model="members" :teamName="form.values.name" />
 
     <Button type="submit" class="mt-6 sticky bottom-0">
       {{ new_team_form_submit_button() }}
@@ -59,19 +59,7 @@ const formSchema = toTypedSchema(
 
 const user = useSupabaseUser();
 
-const members = ref<TeamMember[]>(
-  user.value
-    ? [
-        {
-          name: user.value.user_metadata.displayName,
-          userId: user.value.id,
-          uniformNumbers: [],
-          access: "admin",
-          positions: ["setter"],
-        },
-      ]
-    : []
-);
+const members = ref<TeamMember[]>([]);
 
 const form = useForm({
   validationSchema: formSchema,

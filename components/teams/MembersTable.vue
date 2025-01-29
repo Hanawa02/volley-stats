@@ -196,7 +196,7 @@ const columns: ColumnDef<TeamMember>[] = [
     },
   },
   {
-    accessorKey: "uniformNumbers",
+    accessorKey: "uniformNumber",
     header: ({ column }) => {
       return h(
         Button,
@@ -211,11 +211,9 @@ const columns: ColumnDef<TeamMember>[] = [
       );
     },
     cell: ({ row }: { row: Row<TeamMember> }) => {
-      return h(
-        "div",
-        { class: "flex flex-wrap gap-1" },
-        row.original.uniformNumbers.map((n) => h(Badge, { variant: "outline" }, n))
-      );
+      return h("div", { class: "flex flex-wrap gap-1" }, [
+        h(Badge, { variant: "outline" }, () => row.original.uniformNumber),
+      ]);
     },
   },
   {
