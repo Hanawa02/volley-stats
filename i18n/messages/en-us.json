@@ -19,6 +19,13 @@
   "combo_box_no_option_found": "No option found.",
   "combo_box_placeholder": "Select an option...",
 
+  "date_picker_default_placeholder": "Select a date",
+
+  "fancy_calendar_select_month": "Select a month",
+  "fancy_calendar_select_year": "Select a year",
+
+  "games_new_headline": "Create a new game",
+
   "login_headline": "Login",
   "login_sign_up_link": "Don't have an account yet? Sign up here!",
   "login_form_email_label": "E-mail",
@@ -40,13 +47,21 @@
   "members_table_header_player_positions": "Positions",
   "members_table_header_player_access_type": "Access Type",
 
+  "new_game_form_opponent_team_name_label": "Opponent team name",
+  "new_game_form_opponent_team_name_placeholder": "VG Delmenhorst",
+  "new_game_form_opponent_team_name_description": "The name of the team you will play against.",
+  "new_game_form_date_label": "Date",
+  "new_game_form_date_description": "The date of the game.",
+  "new_game_form_is_home_game_label": "Home Game?",
+  "new_game_form_submit_button": "Create Game",
+
   "new_team_form_name_label": "Team name",
   "new_team_form_name_placeholder": "VFL Oythe",
-  "new_team_form_name_description": "The nmame of your Team.",
+  "new_team_form_name_description": "The name of your Team.",
   "new_team_form_logo_url_label": "Logo URL",
   "new_team_form_logo_url_placeholder": "https://example.com/logo.png",
   "new_team_form_logo_url_description": "The team logo.",
-  "new_team_form_submit_button": "Create Team",
+  "new_team_form_submit_button": "Create Game",
 
   "player_position_coach": "Coach",
   "player_position_libero": "Libero",
