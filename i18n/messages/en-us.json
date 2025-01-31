@@ -55,6 +55,9 @@
   "new_game_form_is_home_game_label": "Home Game?",
   "new_game_form_submit_button": "Create Game",
 
+  "new_set_form_team_starts_serving_label": "Team starts serving?",
+  "new_set_form_submit_button": "Create Set",
+
   "new_team_form_name_label": "Team name",
   "new_team_form_name_placeholder": "VFL Oythe",
   "new_team_form_name_description": "The name of your Team.",

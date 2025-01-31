@@ -28,6 +28,8 @@
       </template>
     </SwitchFormField>
 
+    <ParticipatingPlayersList :team-id="teamId" v-model="selectedPlayers" />
+
     <Button type="submit" class="mt-6 sticky bottom-0">
       {{ new_game_form_submit_button() }}
     </Button>
@@ -39,7 +41,7 @@ import { useForm, type InvalidSubmissionContext } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
-import { useGames, type InsertTeam } from "~/composables/games";
+import { useGames, type InsertTeam, type ParticipatingPlayer } from "~/composables/games";
 import { AccessType, PlayerPositions } from "~/types/database.enums.ts";
 
 import {
@@ -53,13 +55,12 @@ import {
   new_game_form_submit_button,
 } from "translations";
 
-import MembersTable, { type TeamMember } from "~/components/teams/MembersTable.vue";
-
 import InfoTooltip from "~/components/ui/InfoTooltip.vue";
 import { Button } from "~/components/ui/button";
 import InputFormField from "~/components/ui/InputFormField.vue";
 import DatePickerFormField from "~/components/ui/DatePickerFormField.vue";
 import SwitchFormField from "~/components/ui/SwitchFormField.vue";
+import ParticipatingPlayersList from "~/components/games/ParticipatingPlayersList.vue";
 
 const formSchema = toTypedSchema(
   z.object({
@@ -81,10 +82,11 @@ const form = useForm({
 });
 const route = useRoute();
 const teamId = computed(() => route.params.team_id);
+const selectedPlayers = ref<ParticipatingPlayer[]>([]);
 
-const { addGame } = useGames();
+const { addGame, addParticipatingPlayersToGame } = useGames();
 
-const parseTeamFromForm = (): InsertTeam => {
+const parseGameFromForm = (): InsertTeam => {
   return {
     team_id: teamId.value,
     date: form.values.date,
@@ -95,12 +97,19 @@ const parseTeamFromForm = (): InsertTeam => {
 
 const router = useRouter();
 const createGame = async () => {
-  const { data } = await addGame(parseTeamFromForm());
+  const { data } = await addGame(parseGameFromForm());
 
   const gameId = data?.[0].id;
 
   if (gameId) {
-    router.push(`/teams/${teamId.value}/games/${gameId}`);
+    const { data: participatingPlayers } = await addParticipatingPlayersToGame(
+      gameId,
+      selectedPlayers.value
+    );
+
+    if (participatingPlayers) {
+      router.push(`/teams/${teamId.value}/games/${gameId}`);
+    }
   }
 };
 

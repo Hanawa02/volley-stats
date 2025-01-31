@@ -1,22 +1,5 @@
 <template>
   <div class="w-full">
-    <div class="flex gap-2 items-center py-4">
-      <Input
-        class="max-w-52"
-        :placeholder="members_table_filter_placeholder()"
-        :model-value="filterValue"
-        @update:model-value="updateFilterValue"
-      />
-      <Button
-        type="button"
-        @click="removeSelectedUsers"
-        v-html="members_table_remove_players_button()"
-      />
-
-      <AddMemberDialog :teamName="teamName" @addMember="addMember">
-        <Button type="button">{{ members_table_add_players_button() }}</Button>
-      </AddMemberDialog>
-    </div>
     <div class="rounded-md border">
       <Table>
         <TableHeader>
@@ -124,6 +107,7 @@ import {
 import { ArrowUpDown, ChevronDown } from "lucide-vue-next";
 import { h, ref, shallowRef } from "vue";
 
+import type { ParticipatingPlayer } from "~/composables/games";
 import type { TeamMember } from "~/composables/teams";
 import { defineModel } from "vue";
 import {
@@ -148,16 +132,48 @@ import { playerPositionTranslation } from "~/utils/player-position";
 import { memberTypeTranslation } from "~/utils/member-type";
 
 const { users, loadUsers } = useUsers();
-// const { data: users } = await fetchUsers();
 
-const members = defineModel<TeamMember[]>();
+const selectedPlayers = defineModel<ParticipatingPlayer[]>();
 
 type Props = {
-  teamName?: string;
+  teamId: string;
 };
-defineProps<Props>();
 
-const data = computed<TeamMember[]>(() => members.value ?? []);
+const props = defineProps<Props>();
+
+const client = useSupabaseClient();
+
+const { data: allPlayers } = await useAsyncData("allPlayers", async () => {
+  if (!props.teamId) {
+    return [];
+  }
+
+  const { data } = await client
+    .from("team_members")
+    .select("*")
+    .eq("team_id", props.teamId)
+    .order("created_at");
+
+  return data ?? [];
+});
+
+const convertToParticipatingPlayer = (player: TeamMember): ParticipatingPlayer => ({
+  playerId: player.id,
+  name: player.name,
+  uniformNumber: player.uniform_number,
+});
+
+const togglePlayer = (player: TeamMember, value: boolean) => {
+  if (value) {
+    selectedPlayers.value.push(convertToParticipatingPlayer(player));
+  } else {
+    selectedPlayers.value = selectedPlayers.value.filter((p) => p.playerId !== player.id);
+  }
+};
+
+const toggleAllPlayers = (value: boolean) => {
+  allPlayers.value.forEach((player) => togglePlayer(player, value));
+};
 
 const columns: ColumnDef<TeamMember>[] = [
   {
@@ -167,13 +183,19 @@ const columns: ColumnDef<TeamMember>[] = [
         checked:
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate"),
-        "onUpdate:checked": (value: boolean) => table.toggleAllPageRowsSelected(!!value),
+        "onUpdate:checked": (value: boolean) => {
+          table.toggleAllPageRowsSelected(!!value);
+          toggleAllPlayers(value);
+        },
         ariaLabel: members_table_select_all_members_aria_label(),
       }),
     cell: ({ row }: { row: Row<TeamMember> }) =>
       h(Checkbox, {
         checked: row.getIsSelected(),
-        "onUpdate:checked": (value: boolean) => row.toggleSelected(!!value),
+        "onUpdate:checked": (value: boolean) => {
+          row.toggleSelected(!!value);
+          togglePlayer(row.original, value);
+        },
         ariaLabel: members_table_select_row_member_aria_label(),
       }),
     enableSorting: false,
@@ -212,7 +234,7 @@ const columns: ColumnDef<TeamMember>[] = [
     },
     cell: ({ row }: { row: Row<TeamMember> }) => {
       return h("div", { class: "flex flex-wrap gap-1" }, [
-        h(Badge, { variant: "outline" }, () => row.original.uniformNumber),
+        h(Badge, { variant: "outline" }, () => row.original.uniform_number),
       ]);
     },
   },
@@ -238,22 +260,6 @@ const columns: ColumnDef<TeamMember>[] = [
       );
     },
   },
-  {
-    accessorKey: "access",
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: "ghost",
-          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
-        },
-        () => [members_table_header_player_access_type(), h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
-      );
-    },
-    cell: ({ row }) => {
-      return h("div", { class: "capitalize" }, memberTypeTranslation(row.original.access));
-    },
-  },
 ];
 
 const sorting = ref<SortingState>([]);
@@ -263,7 +269,7 @@ const rowSelection = ref({});
 const expanded = ref<ExpandedState>({});
 
 const table = useVueTable({
-  data,
+  data: allPlayers,
   columns,
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
@@ -293,20 +299,4 @@ const table = useVueTable({
     },
   },
 });
-
-const filterValue = computed(() => table.getColumn("name")?.getFilterValue() as string);
-
-const updateFilterValue = (event: string | number) => {
-  table.getColumn("name")?.setFilterValue(event);
-};
-
-const removeSelectedUsers = () => {
-  const selectedIds = table.getSelectedRowModel().rows.map((row) => row.original.id);
-
-  members.value = members.value?.filter((member) => !selectedIds.includes(member.id));
-};
-
-const addMember = (member: TeamMember) => {
-  members.value = [...members.value, member];
-};
 </script>

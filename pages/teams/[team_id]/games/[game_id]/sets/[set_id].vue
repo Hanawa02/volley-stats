@@ -1,7 +1,7 @@
 <template>
   <section v-if="game" class="flex flex-col gap-4 p-4">
     <section>
-      <h1 class="font-bold">{{ game.opponent_team_name }}</h1>
+      <h1 class="font-bold">{{ game.teams.name }} vs {{ game.opponent_team_name }}</h1>
     </section>
 
     <section>
@@ -31,7 +31,7 @@ const { data: game } = await useAsyncData("game", async (context) => {
 
   const { data: games, error } = await client
     .from("games")
-    .select("*, sets(*)")
+    .select("*, sets(*), teams(*)")
     .eq("id", route.params.game_id)
     .order("created_at");
 

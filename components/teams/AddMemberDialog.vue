@@ -114,6 +114,7 @@ const { handleSubmit, resetForm, values } = useForm({
     name: "",
     access: "statistics",
     positions: [],
+    uniformNumber: 0,
   },
 });
 

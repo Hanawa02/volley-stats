@@ -54,35 +54,74 @@ export type Database = {
           },
         ]
       }
+      game_participating_players: {
+        Row: {
+          created_at: string
+          game_id: string
+          id: number
+          player_id: string
+          uniform_number: number
+        }
+        Insert: {
+          created_at?: string
+          game_id: string
+          id?: number
+          player_id: string
+          uniform_number: number
+        }
+        Update: {
+          created_at?: string
+          game_id?: string
+          id?: number
+          player_id?: string
+          uniform_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_participating_players_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_participating_players_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       games: {
         Row: {
           created_at: string
           date: string
-          home_game: boolean
           id: string
+          is_home_game: boolean
           opponent_team_name: string
-          team_ids: string
+          team_id: string
         }
         Insert: {
           created_at?: string
           date: string
-          home_game: boolean
           id?: string
+          is_home_game: boolean
           opponent_team_name: string
-          team_ids: string
+          team_id: string
         }
         Update: {
           created_at?: string
           date?: string
-          home_game?: boolean
           id?: string
+          is_home_game?: boolean
           opponent_team_name?: string
-          team_ids?: string
+          team_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "games_team_ids_fkey"
-            columns: ["team_ids"]
+            foreignKeyName: "games_team_id_fkey"
+            columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
             referencedColumns: ["id"]
@@ -210,13 +249,6 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "team_members_team_id_fkey"
-            columns: ["team_id"]
-            isOneToOne: false
-            referencedRelation: "teams"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "team_members_team_ids_fkey"
             columns: ["team_id"]
