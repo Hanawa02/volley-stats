@@ -15,7 +15,15 @@
 
       <template v-for="key in Object.keys(playerInPositions)" :key="key" v-slot:[`rotation-${key}`]>
         <div
-          class="w-full h-full hover:bg-orange-400/50 cursor-pointer flex flex-col items-center justify-center"
+          :class="[
+            'w-full h-full cursor-pointer flex flex-col items-center justify-center',
+            'hover:bg-orange-400/50',
+            {
+              'border-x border-dashed border-blue-600 min-h-12': ['libero-1', 'libero-2'].includes(
+                key
+              ),
+            },
+          ]"
           @drop="onDrop($event, key)"
           @dragover="onDragOver"
           @click="setPlayerOnPosition(key, null)"
@@ -30,7 +38,12 @@
       <li
         v-for="player of gamePlayers"
         :key="player.player_id"
-        class="bg-slate-100 hover:bg-slate-200"
+        :class="[
+          player.positions.includes('libero')
+            ? 'bg-blue-300 hover:bg-blue-400'
+            : 'bg-slate-100 hover:bg-slate-200',
+          'cursor-move',
+        ]"
       >
         <div class="p-2" :draggable="true" @dragstart="startDrag($event, player)">
           {{ player.uniform_number }} - {{ player.name }}
@@ -38,7 +51,8 @@
       </li>
     </ul>
 
-    <Button type="submit" class="mt-6 sticky bottom-0">
+    {{ disableButton }}
+    <Button type="submit" class="mt-6 sticky bottom-0" :disabled="disableButton">
       {{ new_set_form_submit_button() }}
     </Button>
   </form>
@@ -84,6 +98,14 @@ const parseSetFromForm = (): InsertTeam => {
   return {
     game_id: gameId.value,
     team_starts_serving: form.values.team_starts_serving,
+    starting_player_1: playerInPositions.value["1"]?.player_id,
+    starting_player_2: playerInPositions.value["2"]?.player_id,
+    starting_player_3: playerInPositions.value["3"]?.player_id,
+    starting_player_4: playerInPositions.value["4"]?.player_id,
+    starting_player_5: playerInPositions.value["5"]?.player_id,
+    starting_player_6: playerInPositions.value["6"]?.player_id,
+    starting_libero_1: playerInPositions.value["libero-1"]?.player_id,
+    starting_libero_2: playerInPositions.value["libero-2"]?.player_id,
   };
 };
 
@@ -99,13 +121,15 @@ type GamePlayerWithGame = GamePlayer & {
   };
 };
 
-const playerInPositions = ref<Record<number, GamePlayer | null>>({
-  1: null,
-  2: null,
-  3: null,
-  4: null,
-  5: null,
-  6: null,
+const playerInPositions = ref<Record<string, GamePlayer | null>>({
+  "1": null,
+  "2": null,
+  "3": null,
+  "4": null,
+  "5": null,
+  "6": null,
+  "libero-1": null,
+  "libero-2": null,
 });
 
 const { data: gamePlayers } = await useAsyncData<GamePlayerWithGame[]>(
@@ -117,7 +141,7 @@ const { data: gamePlayers } = await useAsyncData<GamePlayerWithGame[]>(
 
     const { data, error } = await client
       .from("game_participating_players")
-      .select("player_id, uniform_number, games(opponent_team_name), team_members(name)")
+      .select("player_id, uniform_number, games(opponent_team_name), team_members(name, positions)")
       .eq("game_id", gameId.value)
       .order("created_at");
 
@@ -126,6 +150,7 @@ const { data: gamePlayers } = await useAsyncData<GamePlayerWithGame[]>(
         player_id: item.player_id,
         uniform_number: item.uniform_number,
         name: item.team_members.name,
+        positions: item.team_members.positions,
         games: item.games,
       })) ?? []
     );
@@ -151,7 +176,7 @@ const handleErrors = (errors: InvalidSubmissionContext) => {
 
 const onSubmit = form.handleSubmit(createSet, handleErrors);
 
-const setPlayerOnPosition = (position: number, player) => {
+const setPlayerOnPosition = (position: string, player) => {
   playerInPositions.value[position] = player;
 };
 
@@ -164,11 +189,17 @@ const onDragOver = (event: Event) => {
   event.dataTransfer.dropEffect = "move";
 };
 
-const onDrop = (event: Event, position: number) => {
+const onDrop = (event: Event, position: string) => {
   event.preventDefault();
 
   const id = event.dataTransfer.getData("playerId");
   const player = JSON.parse(event.dataTransfer.getData("player"));
   setPlayerOnPosition(position, player);
 };
+
+const disableButton = computed(() => {
+  return Object.entries(playerInPositions.value).some(
+    ([position, player]) => !["libero-1", "libero-2"].includes(position) && player === null
+  );
+});
 </script>

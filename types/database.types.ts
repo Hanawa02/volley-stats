@@ -133,6 +133,8 @@ export type Database = {
           created_at: string
           game_id: string
           id: string
+          starting_libero_1: string | null
+          starting_libero_2: string | null
           starting_player_1: string
           starting_player_2: string
           starting_player_3: string
@@ -145,6 +147,8 @@ export type Database = {
           created_at?: string
           game_id: string
           id?: string
+          starting_libero_1?: string | null
+          starting_libero_2?: string | null
           starting_player_1: string
           starting_player_2: string
           starting_player_3: string
@@ -157,6 +161,8 @@ export type Database = {
           created_at?: string
           game_id?: string
           id?: string
+          starting_libero_1?: string | null
+          starting_libero_2?: string | null
           starting_player_1?: string
           starting_player_2?: string
           starting_player_3?: string
@@ -171,6 +177,20 @@ export type Database = {
             columns: ["game_id"]
             isOneToOne: false
             referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sets_starting_libero_1_fkey"
+            columns: ["starting_libero_1"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sets_starting_libero_2_fkey"
+            columns: ["starting_libero_2"]
+            isOneToOne: false
+            referencedRelation: "team_members"
             referencedColumns: ["id"]
           },
           {
