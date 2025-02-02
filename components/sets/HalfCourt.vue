@@ -15,7 +15,10 @@
         <div :class="defenseAreaStyle"><slot name="rotation-1">1</slot></div>
       </section>
     </div>
-    <section class="flex bg-blue-200 border-x-4 border-b-4 border-dashed border-blue-600">
+    <section
+      v-if="hasLibero1Slot || hasLibero2Slot"
+      class="flex bg-blue-200 border-x-4 border-b-4 border-dashed border-blue-600"
+    >
       <slot name="rotation-libero-1"></slot>
       <slot name="rotation-libero-2"></slot>
     </section>
