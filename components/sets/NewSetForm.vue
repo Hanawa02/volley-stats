@@ -28,8 +28,14 @@
           @dragover="onDragOver"
           @click="setPlayerOnPosition(key, null)"
         >
-          {{ playerInPositions[key]?.name ?? key }}
-          <span v-if="playerInPositions[key]">#{{ playerInPositions[key]?.uniform_number }}</span>
+          <template v-if="playerInPositions[key]">
+            <span
+              >#{{ playerInPositions[key]?.uniform_number }} -
+              {{ playerInPositions[key]?.name }}</span
+            >
+            <span></span>
+          </template>
+          <span v-else class="text-black">{{ key }}</span>
         </div>
       </template>
     </HalfCourt>
@@ -194,6 +200,15 @@ const onDrop = (event: Event, position: string) => {
 
   const id = event.dataTransfer.getData("playerId");
   const player = JSON.parse(event.dataTransfer.getData("player"));
+
+  const currentPlayerPosition = Object.keys(playerInPositions.value).find(
+    (key) => playerInPositions.value[key]?.player_id === player.player_id
+  );
+
+  if (currentPlayerPosition) {
+    setPlayerOnPosition(currentPlayerPosition, null);
+  }
+
   setPlayerOnPosition(position, player);
 };
 
