@@ -133,6 +133,7 @@ export type Database = {
           created_at: string
           game_id: string
           id: string
+          set_number: number
           starting_libero_1: string | null
           starting_libero_2: string | null
           starting_player_1: string
@@ -147,6 +148,7 @@ export type Database = {
           created_at?: string
           game_id: string
           id?: string
+          set_number: number
           starting_libero_1?: string | null
           starting_libero_2?: string | null
           starting_player_1: string
@@ -161,6 +163,7 @@ export type Database = {
           created_at?: string
           game_id?: string
           id?: string
+          set_number?: number
           starting_libero_1?: string | null
           starting_libero_2?: string | null
           starting_player_1?: string
