@@ -1,41 +1,94 @@
 <template>
-  <section v-if="game" class="flex flex-col gap-4 p-4">
+  <details>
+    <summary>data structure</summary>
+    .
+    <pre>{{ set }}</pre>
+    .
+  </details>
+  <section v-if="set" class="flex flex-col gap-4 p-4">
     <section>
-      <h1 class="font-bold">{{ game.teams.name }} vs {{ game.opponent_team_name }}</h1>
+      <h1 class="font-bold">Set {{ set.set_number }} - {{ set.team_name }}</h1>
     </section>
 
     <section>
-      <h2 class="font-bold">Sets</h2>
-      <ul>
-        <template v-for="set in game.game_sets">
-          <li v-if="set" :key="set.id">
-            <p>{{ set.name }} - {{ set.uniform_number }} - {{ set.positions.join(" | ") }}</p>
-          </li>
+      <HalfCourt class="lg:max-w-96 h-fit">
+        <template #opponent>
+          <div class="text-lg text-center p-2 font-semibold text-red-900">
+            {{ opponentTeamName }}
+          </div>
         </template>
-      </ul>
-
-      <Button @click="goToNewGame">New Set</Button>
+      </HalfCourt>
     </section>
   </section>
 </template>
 
 <script setup lang="ts">
+import HalfCourt from "~/components/sets/HalfCourt.vue";
+
 const client = useSupabaseClient();
 const user = useSupabaseUser();
 const route = useRoute();
 
-const { data: game } = await useAsyncData("game", async (context) => {
+const teamId = computed(() => route.params.team_id);
+const gameId = computed(() => route.params.game_id);
+const setId = computed(() => route.params.set_id);
+
+const opponentTeamName = computed(() => set.value.opponent_team_name);
+
+const { data: set } = await useAsyncData("set", async (context) => {
   if (!user.value) {
     return;
   }
 
-  const { data: games, error } = await client
-    .from("games")
-    .select("*, sets(*), teams(*)")
-    .eq("id", route.params.game_id)
+  const { data: sets, error } = await client
+    .from("sets")
+    .select(
+      `*, 
+      games(
+        is_home_game, 
+        opponent_team_name, 
+        teams(
+          name,
+          logo_url
+        ),
+        game_participating_players(
+          player_id,
+          uniform_number,
+          team_members(
+            name,
+            positions
+          )
+        )
+      )`
+    )
+    .eq("id", setId.value)
     .order("created_at");
 
-  return games[0];
+  const playerPosFixes = [1, 2, 3, 4, 5, 6];
+  const liberoPosFixes = [1, 2];
+
+  const rawSet = sets[0];
+  const formattedSet = {
+    ...rawSet,
+    team_name: rawSet.games.teams.name,
+    team_logo_url: rawSet.games.teams.logo_url,
+    opponent_team_name: rawSet.games.opponent_team_name,
+    ...playerPosFixes.reduce((acc, pos) => {
+      const key = `starting_player_${pos}`;
+      const playerId = rawSet[key];
+      const player = rawSet.games.game_participating_players.find((p) => p.player_id === playerId);
+      return {
+        ...acc,
+        [key]: {
+          player_id: playerId,
+          uniform_number: player.uniform_number,
+          name: player.team_members.name,
+          positions: player.team_members.positions,
+        },
+      };
+    }, {}),
+  };
+  return formattedSet;
 });
 
 const goToNewGame = () => {
