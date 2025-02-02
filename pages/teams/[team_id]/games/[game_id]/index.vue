@@ -7,9 +7,11 @@
     <section>
       <h2 class="font-bold">Sets</h2>
       <ul>
-        <template v-for="set in game.game_sets">
+        <template v-for="set of game.sets">
           <li v-if="set" :key="set.id">
-            <p>{{ set.name }} - {{ set.uniform_number }} - {{ set.positions.join(" | ") }}</p>
+            <NuxtLink :to="`/teams/${teamId}/games/${gameId}/sets/${set.id}`"
+              >Set {{ set.set_number }}</NuxtLink
+            >
           </li>
         </template>
       </ul>
@@ -24,6 +26,9 @@ const client = useSupabaseClient();
 const user = useSupabaseUser();
 const route = useRoute();
 const router = useRouter();
+
+const teamId = computed(() => route.params.team_id);
+const gameId = computed(() => route.params.game_id);
 
 const { data: game } = await useAsyncData("game", async (context) => {
   if (!user.value) {
