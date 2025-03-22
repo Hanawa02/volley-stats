@@ -71,13 +71,34 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 
 ## Features (in order of importance)
 
-- [ ] Add Team
-- [ ] Add team members
-- [ ] Add Game
-- [ ] Add Set
-- [ ] Add Action
+- [x] Add Team
+
+  - [x] Add team members
+    - [x] Allow multi selection for player positions
+    - [x] Allow multi input for shirt number
+
+- [x] Add Game
+- [x] Add Set
+
+  - [x] connect to backend
+  - [x] Add validation for same player in multiple positions
+  - [ ] ~ highlight players already in game
+
+- [ ] Set Page
+
+  - [ ] Add Action
+    - [ ] Create Action Pop over
+      - [ ] upper part with categories (attack, block, serve, etc)
+      - [ ] lower part with action results (direct point, 1-touch point, in game, etc)
+    - [ ] Add mini statistics on page (only players with some action)
+      - [ ] Serve
+      - [ ] Attack
+
 - [ ] Basic statistics view
 - [ ] Fix styling/design
+- [ ] Fix copy
+- [ ] transform everything to snake case
+- [ ] improve data fetching by adding data to store
 
 - [ ] Edit/Remove Team
 - [ ] Edit/Remove team members
@@ -85,6 +106,8 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 - [ ] Edit/Remove Set
 - [ ] Edit/Remove Action
 - [ ] Undo Action?
+- [ ] PDF Generator
+- [ ] Redirect if no data found (in all pages)
 
 - [ ] Google auth
 - [ ] Generate/Invite team members as users
